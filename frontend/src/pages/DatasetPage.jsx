@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Plus, Download, Trash2, Video, AlertCircle, Play, Square, Check, Activity } from "lucide-react";
 import WebcamFeed from "../components/WebcamFeed";
+import { API_URL } from "../config";
 
 export default function DatasetPage({ isBackendConnected }) {
   const [targetLabel, setTargetLabel] = useState("Hello");
@@ -29,7 +30,7 @@ export default function DatasetPage({ isBackendConnected }) {
 
   const fetchDatasetStatus = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/dataset/status");
+      const res = await fetch(`${API_URL}/api/dataset/status`);
       if (res.ok) {
         const data = await res.json();
         setTotalSamples(data.total_samples);
@@ -92,7 +93,7 @@ export default function DatasetPage({ isBackendConnected }) {
         return;
       }
 
-      const res = await fetch("http://localhost:8000/api/dataset/record-sequence", {
+      const res = await fetch(`${API_URL}/api/dataset/record-sequence`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -129,7 +130,7 @@ export default function DatasetPage({ isBackendConnected }) {
   const handleClearDataset = async () => {
     if (window.confirm("Are you sure you want to completely clear the dataset and delete all trained models?")) {
       try {
-        const res = await fetch("http://localhost:8000/api/dataset/clear", {
+        const res = await fetch(`${API_URL}/api/dataset/clear`, {
           method: "DELETE",
         });
         if (res.ok) {
@@ -145,7 +146,7 @@ export default function DatasetPage({ isBackendConnected }) {
   };
 
   const handleDownloadDataset = () => {
-    window.open("http://localhost:8000/api/dataset/download");
+    window.open(`${API_URL}/api/dataset/download`);
   };
 
   return (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Play, Upload, Check, Loader2, Sparkles, TrendingUp, Shield, HelpCircle, FileDown, AlertTriangle } from "lucide-react";
+import { API_URL } from "../config";
 
 export default function AdminPage({ isBackendConnected }) {
   const [isTraining, setIsTraining] = useState(false);
@@ -28,7 +29,7 @@ export default function AdminPage({ isBackendConnected }) {
 
   const fetchActiveModel = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/model/active");
+      const res = await fetch(`${API_URL}/api/model/active`);
       if (res.ok) {
         const data = await res.json();
         setActiveModel(data);
@@ -47,7 +48,7 @@ export default function AdminPage({ isBackendConnected }) {
 
   const fetchModelList = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/model/list");
+      const res = await fetch(`${API_URL}/api/model/list`);
       if (res.ok) {
         const data = await res.json();
         setModelList(data);
@@ -61,7 +62,7 @@ export default function AdminPage({ isBackendConnected }) {
     if (!isBackendConnected) return;
     setIsTraining(true);
     try {
-      const res = await fetch("http://localhost:8000/api/model/train", {
+      const res = await fetch(`${API_URL}/api/model/train`, {
         method: "POST",
       });
       if (res.ok) {
@@ -91,7 +92,7 @@ export default function AdminPage({ isBackendConnected }) {
 
   const handleActivateModel = async (modelId) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/model/activate/${modelId}`, {
+      const res = await fetch(`${API_URL}/api/model/activate/${modelId}`, {
         method: "POST",
       });
       if (res.ok) {
@@ -118,7 +119,7 @@ export default function AdminPage({ isBackendConnected }) {
     formData.append("file", uploadFile);
 
     try {
-      const res = await fetch("http://localhost:8000/api/model/upload", {
+      const res = await fetch(`${API_URL}/api/model/upload`, {
         method: "POST",
         body: formData,
       });

@@ -5,6 +5,7 @@ import LandingPage from "./pages/LandingPage";
 import RecognitionPage from "./pages/RecognitionPage";
 import DatasetPage from "./pages/DatasetPage";
 import AdminPage from "./pages/AdminPage";
+import { API_URL } from "./config";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("landing");
@@ -20,7 +21,7 @@ export default function App() {
   useEffect(() => {
     const checkConnection = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/settings");
+        const res = await fetch(`${API_URL}/api/settings`);
         if (res.ok) {
           setIsBackendConnected(true);
           const data = await res.json();
@@ -44,7 +45,7 @@ export default function App() {
     
     if (isBackendConnected) {
       try {
-        await fetch("http://localhost:8000/api/settings", {
+        await fetch(`${API_URL}/api/settings`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newSettings),
@@ -58,7 +59,7 @@ export default function App() {
   const handleResetHistory = async () => {
     if (window.confirm("Are you sure you want to delete all speech history logs?")) {
       try {
-        const res = await fetch("http://localhost:8000/api/analytics/history/clear", {
+        const res = await fetch(`${API_URL}/api/analytics/history/clear`, {
           method: "DELETE",
         });
         if (res.ok) {

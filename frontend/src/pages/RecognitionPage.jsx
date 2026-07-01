@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Volume2, VolumeX, RefreshCw, Download, Mic, Hand, Trash2, Copy, ArrowLeftRight } from "lucide-react";
 import WebcamFeed from "../components/WebcamFeed";
+import { API_URL, WS_URL } from "../config";
 
 export default function RecognitionPage({ isBackendConnected }) {
   const [currentGesture, setCurrentGesture] = useState(null);
@@ -38,7 +39,7 @@ export default function RecognitionPage({ isBackendConnected }) {
       
       console.log("Connecting to WebSocket prediction server...");
       try {
-        ws = new WebSocket("ws://localhost:8000/api/ws/predict");
+        ws = new WebSocket(`${WS_URL}/api/ws/predict`);
         wsRef.current = ws;
 
         ws.onopen = () => {
@@ -120,7 +121,7 @@ export default function RecognitionPage({ isBackendConnected }) {
 
   const fetchSettings = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/settings");
+      const res = await fetch(`${API_URL}/api/settings`);
       if (res.ok) {
         const data = await res.json();
         setLanguage(data.language);
@@ -134,7 +135,7 @@ export default function RecognitionPage({ isBackendConnected }) {
 
   const updateSettings = async (updates) => {
     try {
-      await fetch("http://localhost:8000/api/settings", {
+      await fetch(`${API_URL}/api/settings`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -150,7 +151,7 @@ export default function RecognitionPage({ isBackendConnected }) {
 
   const fetchHistory = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/history");
+      const res = await fetch(`${API_URL}/api/history`);
       if (res.ok) {
         const data = await res.json();
         setHistory(data);
@@ -228,7 +229,7 @@ export default function RecognitionPage({ isBackendConnected }) {
     if (!isBackendConnected) return;
 
     try {
-      const res = await fetch("http://localhost:8000/api/predict/sequence", {
+      const res = await fetch(`${API_URL}/api/predict/sequence`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ landmarks_seq: landmarksSeq }),
@@ -316,7 +317,7 @@ export default function RecognitionPage({ isBackendConnected }) {
 
     try {
       // 1. Query translation from backend
-      const transRes = await fetch("http://localhost:8000/api/translate", {
+      const transRes = await fetch(`${API_URL}/api/translate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -339,7 +340,7 @@ export default function RecognitionPage({ isBackendConnected }) {
       speakText(translatedText);
 
       // 3. Save logs to database conversation history
-      const saveRes = await fetch("http://localhost:8000/api/history", {
+      const saveRes = await fetch(`${API_URL}/api/history`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -445,7 +446,7 @@ export default function RecognitionPage({ isBackendConnected }) {
   const handleClearHistory = async () => {
     if (window.confirm("Are you sure you want to delete the conversation history?")) {
       try {
-        const res = await fetch("http://localhost:8000/api/history", {
+        const res = await fetch(`${API_URL}/api/history`, {
           method: "DELETE",
         });
         if (res.ok) {
