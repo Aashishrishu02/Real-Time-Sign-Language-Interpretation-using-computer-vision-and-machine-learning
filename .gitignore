@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+/frontend/node_modules/
+/backend/venv/
+venv/
+.venv/
+env/
+.env/
+
+# Build outputs
+dist/
+/frontend/dist/
+dist-ssr/
+*.local
+
+# Python caches and tests
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Local databases and state
+*.db
+*.sqlite
+*.sqlite3
+backend/data/signspeak.db
+
+# OS and Editor files
+.DS_Store
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ML Models (Ignore generated models, keep active model if needed)
+# backend/ml/models/model_*.joblib
